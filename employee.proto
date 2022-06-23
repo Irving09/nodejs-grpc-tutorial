@@ -1,0 +1,32 @@
+syntax = "proto3"; // indicates that we want to use Protocol Buffer version 3
+
+package employee; //  indicates that we are creating a package 
+                  //  called as employee within which we will define our services
+
+service Employee {
+
+  rpc getDetails (EmployeeRequest) returns (EmployeeResponse) {}
+  /*
+     Within this service we are creating a function ( rpc ) called as getDetails 
+     which accepts input of type EmployeeRequest and 
+     provides response in the format EmployeeResponse
+  */
+
+}
+
+message EmployeeRequest {
+  int32 id = 1;
+}
+
+message EmployeeResponse{
+  EmployeeDetails message = 1;
+}
+
+message EmployeeDetails {
+  int32 id = 1;
+  string email = 2;
+  string firstName = 3; 
+  string lastName = 4;
+  repeated string skills = 5; 
+  // Every field defined should have a unique field number, used for encoding/decoding
+}
