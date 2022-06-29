@@ -6,18 +6,14 @@ const protoLoaderConfig = require('./proto-loader-config.js');
 
 let packageDefinition = protoLoader.loadSync(PROTO_PATH, protoLoaderConfig);
 let employee_proto = grpc.loadPackageDefinition(packageDefinition).employee;
-/* The Above script loads the employee package into employee_proto variable */
+/* use the employee_proto generated code to create stubs */
 
-/*
-the client has a stub (referred to as just a client in some languages) 
-that provides the same methods as the server.
+let stub = new employee_proto.Employee('localhost:4500', grpc.credentials.createInsecure());
+// creates a tcp connection (channel) to the grpc server on a specified host and port.
+// each stub wraps a Channel
 
-variable is called client but terminology sometimes it is called stub instead of client
-*/
-let client = new employee_proto.Employee('localhost:4500',
-                                       grpc.credentials.createInsecure());
 let employeeId = 1;
- client.getDetails({id: employeeId}, (err, response) => {
+stub.getDetails({id: employeeId}, (err, response) => {
     if (err) {
         console.log('err', err);
     } else {
